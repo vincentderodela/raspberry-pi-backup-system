@@ -1,0 +1,17 @@
+[Unit]
+Description=Mount Pomme NAS Shares
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=vincent
+Group=vincent
+WorkingDirectory=/home/vincent
+ExecStart=/home/vincent/mount-pomme-auto.sh
+RemainAfterExit=yes
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,17 @@
+[Unit]
+Description=Real-time pCloud File Monitor (SSD optimized)
+After=pomme-mount.service
+Wants=pomme-mount.service
+RequiresMountsFor=/mnt/ssd
+
+[Service]
+Type=simple
+User=vincent
+Group=vincent
+WorkingDirectory=/home/vincent
+ExecStart=/bin/bash -c 'inotifywait -m -r -e modify,create,delete,move --exclude "(#recycle|#snapshot|\\.DS_Store|Thumbs\\.db|\\.Trash-)" /mnt/pomme | while read path action file; do echo "$(date): $action $path$file" >> /var/log/pcloud-sync/realtime.log; sleep 15; /home/vincent/ssd-sync.sh --background >/dev/null 2>&1; done'
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

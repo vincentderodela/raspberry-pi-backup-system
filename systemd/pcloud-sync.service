@@ -1,0 +1,17 @@
+[Unit]
+Description=High-Speed pCloud SSD Sync Service
+After=network.target pomme-mount.service
+Wants=pomme-mount.service
+RequiresMountsFor=/mnt/ssd
+
+[Service]
+Type=oneshot
+User=vincent
+Group=vincent
+WorkingDirectory=/home/vincent
+ExecStart=/home/vincent/ssd-sync.sh --internal-sync
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
